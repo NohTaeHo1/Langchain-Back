@@ -22,6 +22,6 @@ async def titanic(req:Request):
     data = f.read()
     print(data)
     f.close()
-    service.process()
+    service.preprocess()
     print(req)
     return {"titanic":"생존자는 100명이야"}

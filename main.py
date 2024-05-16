@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import APIRouter, FastAPI
 from langchain.chat_models.openai import ChatOpenAI
 from langchain.schema import HumanMessage, AIMessage, SystemMessage
 import os
@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import uvicorn
 from app.api.titanic.model.titanic_model import TitanicModel
 from app.api.main_router import router
+from app.api.titanic.service.titanic_service import TitanicService
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
@@ -18,6 +19,8 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
 
+# router = APIRouter()
+# service = TitanicService()
 
 class Request(BaseModel):
     question: str
@@ -26,7 +29,6 @@ class Response(BaseModel):
     answer: str
 
 app = FastAPI()
-
 
 
 app.include_router(router, prefix="/api")
@@ -79,3 +81,5 @@ def read_item(item_id: int, q: str = None):
 
 if __name__ == "__main__":
     uvicorn.run(app, host="localhost", port=8000)
+
+
