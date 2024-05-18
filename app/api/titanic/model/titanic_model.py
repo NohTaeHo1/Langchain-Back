@@ -44,7 +44,7 @@ class TitanicModel(object):
 
                 this = self.embarked_nominal(this)
                 this = self.age_ratio(this)
-                # this = self.drop_feature(this, 'Age')
+                this = self.drop_feature(this, 'Age')
 
                 this = self.pclass_ordinal(this)
                 this = self.fare_ordinal(this)
@@ -131,13 +131,15 @@ class TitanicModel(object):
     
     @staticmethod
     def fare_ordinal(this) -> pd.DataFrame:
+            this.train['Fare'] = this.train['Fare'].fillna(0)
+            this.test['Fare'] = this.test['Fare'].fillna(0)
             return this
 
     @staticmethod
     def embarked_nominal(this) -> pd.DataFrame:
-            this.train['Embarked'] = this.train['Embarked'].map({'C': 1, 'Q': 2, 'S': 3})
-            this.test['Embarked'] = this.test['Embarked'].map({'C': 1, 'Q': 2, 'S': 3})
-            return this
+                this.train['Embarked'] = this.train['Embarked'].fillna(0).map({'C': 1, 'Q': 2, 'S': 3})
+                this.test['Embarked'] = this.test['Embarked'].fillna(0).map({'C': 1, 'Q': 2, 'S': 3})
+                return this
 
     @staticmethod
     def extract_title_from_name(this) -> pd.DataFrame:
@@ -203,7 +205,7 @@ class TitanicModel(object):
             return this
     
     @staticmethod
-    def create_k_fold() -> object:
+    def create_k_fold() -> KFold:
             return KFold(n_splits=10, shuffle=True, random_state=0)
     
     @staticmethod
